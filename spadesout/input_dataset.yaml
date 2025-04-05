@@ -1,0 +1,7 @@
+- "left reads":
+  - "/Users/juliangarcia/Desktop/genome_analysis/Julian_1.fastq.gz"
+  "number": !!int "1"
+  "orientation": "fr"
+  "right reads":
+  - "/Users/juliangarcia/Desktop/genome_analysis/Julian_2.fastq.gz"
+  "type": "paired-end"
