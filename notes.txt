@@ -1,0 +1,27 @@
+# Assemble genome using SPAdes v4.1.0
+spades.py -1 Julian_1.fastq.gz -2 Julian_2.fastq.gz -o spadesout
+
+# Assemble genome using ABySS v2.3.7
+abyss-pe name=assembly k=96 B=2G in='Julian_1.fastq.gz Julian_2.fastq.gz'
+
+# Quality assessment of assembly using QUAST v5.3.0
+quast.py spadesout/scaffolds.fasta -o quastspades
+
+quast.py abyssout/assembly-scaffolds.fa -o quastabyss
+
+# Pull rRNA sequences with barrnap version 0.9
+barrnap --kingdom bac spadesout/scaffolds.fasta > rRNAsequences.gff
+
+# Use bedtools v2.31.1 to pull the fasta sequences 
+bedtools getfasta -fi spadesout/scaffolds.fasta -bed rRNAsequences.gff -fo rRNAsequences.fasta
+
+# Use blastn to identify 16S rRNA sequence
+Closest match: Leptospira chreensis
+
+# Use dfast ver 1.3.6 for protein annotation 
+dfast --genome spadesout/scaffolds.fasta --out dfast_output
+
+# Protein annotation with prokka galaxy v 1.14.6+galaxy1
+
+# average nucleotide identity with fastANI version 1.34
+fastANI -q spadesout/scaffolds.fasta --rl neighbors.txt -o salmonellaneighbors.txt
